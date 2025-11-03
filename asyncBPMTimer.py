@@ -16,6 +16,40 @@ class AsyncBPMTimer(BPMTimer):
     async def async_wait_for_beats(self, num_beats):
         """Async version of wait_for_beats"""
         await asyncio.sleep(num_beats * self.beat_duration)
+    
+    def get_current_phase(self):
+        """
+        Get current phase within beat (0.0 to 1.0)
+        Inherits from BPMTimer but provided here for convenience
+        """
+        return self.get_phase()
+    
+    def get_current_subdivision(self, subdivision=0.25):
+        """
+        Get current subdivision number
+        
+        Args:
+            subdivision: Subdivision size in beats (e.g., 0.25 for sixteenth notes, 0.5 for eighth notes)
+        
+        Returns:
+            Integer representing which subdivision we're currently in
+        """
+        beat = self.get_current_beat()
+        return int(beat / subdivision)
+    
+    def get_subdivision_phase(self, subdivision=0.25):
+        """
+        Get current phase within the subdivision (0.0 to 1.0)
+        
+        Args:
+            subdivision: Subdivision size in beats (e.g., 0.25 for sixteenth notes, 0.5 for eighth notes)
+        
+        Returns:
+            Float from 0.0 to 1.0 representing position within current subdivision
+        """
+        beat = self.get_current_beat()
+        subdivision_position = beat / subdivision
+        return subdivision_position - int(subdivision_position)
 
 async def async_drum_pattern(timer, name, pattern, subdivision=0.25):
     """Async drum pattern"""

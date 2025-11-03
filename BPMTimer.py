@@ -1,4 +1,5 @@
 import time
+import math
 
 class BPMTimer:
     """Convert between perf_counter timestamps and musical timing (BPM)"""
@@ -73,3 +74,11 @@ class BPMTimer:
             self.bpm = new_bpm
             self.beat_duration = 60.0 / new_bpm
             self.start_time = time.perf_counter()
+    
+    def phase_to_sine(self, phase_offset=0.0, beat_multiplier=1.0):
+        def waveform_func(beat):
+            # Calculate phase: (beat * multiplier + offset) * 2π
+            phase = (beat * beat_multiplier + phase_offset) * 2 * math.pi
+            return math.sin(phase)
+        
+        return waveform_func
