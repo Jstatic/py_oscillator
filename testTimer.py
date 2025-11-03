@@ -1,4 +1,5 @@
 import math
+
 from BPMTimer import BPMTimer
 
 timer = BPMTimer(120)
